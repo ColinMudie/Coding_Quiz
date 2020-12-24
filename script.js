@@ -15,7 +15,12 @@ let currentArray = 0;
 let currentScore = 0;
 let scoreEl = document.querySelector('#total-score');
 questionsEl.setAttribute('style', 'display: none;');
+let scoreboardEl = document.querySelector('.scoreboard');
 
+let user = {
+    name: '',
+    highscore: ''
+};
 
 // array of objects for questions
 let questionArray = [
@@ -42,9 +47,24 @@ let questionArray = [
     },
 ]
 
+
+//prompt for name to add to scoreboard
+function beginGame() {
+    return prompt("Name: ");
+    
+    }
+    
+
+
+user.name = beginGame();
+console.log(user);
 function gameOver() {
     startBtnEl.setAttribute('style', 'display: none;');
     questionsEl.setAttribute('style', 'display: none;');
+    secondsEl.setAttribute('style', 'display: none;');
+    scoreEl.setAttribute('style', 'display: none;');
+    scoreboardEl.setAttribute('style', 'display: inline;');
+
 }
 
 //textcontent function
@@ -52,6 +72,7 @@ function changeQuestion(x) {
     if (currentArray === 3) {
         gameOver()
         console.log(x);
+        
     }
     else {
         qText.textContent = questionArray[x].questionText;
@@ -130,8 +151,14 @@ questionsEl.addEventListener("click", function (event) {
 
 
 
+// for leadboard placement
+// if (objA.score > objB.score){
+//     return objA
+// }
+// else{
+//     return objB
 
-
+// }
 
 
 
@@ -180,3 +207,15 @@ questionsEl.addEventListener("click", function (event) {
 // buttonA.addEventListener("click", ));
 // buttonB.addEventListener("click", console.log(buttonB.textContent));
 // buttonC.addEventListener("click", console.log(buttonC.textContent));
+
+
+
+
+
+
+
+
+
+
+
+// local vs global scope

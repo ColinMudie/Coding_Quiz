@@ -4,6 +4,10 @@
 }
 
 .btn-custom{
-    color: red;
-    background-color: white;
+    color: rgb(178, 164, 198);
+    background-color: rgb(76, 69, 96);
+}
+.btn-custom:hover{
+    background-color: rgb(101, 95, 118);
+    color: white;
 }
