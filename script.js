@@ -15,11 +15,13 @@ let currentArray = 0;
 let currentScore = 0;
 let scoreEl = document.querySelector('#total-score');
 questionsEl.setAttribute('style', 'display: none;');
-let scoreboardEl = document.querySelector('.scoreboard');
+let scoreboardEl = document.querySelector('#scoreboard');
+var userHighScore = [];
 
+//object to store the name and highscore to.
 let user = {
     name: '',
-    highscore: ''
+    highscore: currentScore
 };
 
 // array of objects for questions
@@ -51,20 +53,48 @@ let questionArray = [
 //prompt for name to add to scoreboard
 function beginGame() {
     return prompt("Name: ");
-    
-    }
-    
+}
+
 
 
 user.name = beginGame();
 console.log(user);
+
 function gameOver() {
+    window.localStorage.setItem("name", JSON.stringify(user));
+    // localStorage.setItem("highschore", JSON.stringify(user.highscore))
     startBtnEl.setAttribute('style', 'display: none;');
     questionsEl.setAttribute('style', 'display: none;');
     secondsEl.setAttribute('style', 'display: none;');
     scoreEl.setAttribute('style', 'display: none;');
-    scoreboardEl.setAttribute('style', 'display: inline;');
 
+    storedUser = JSON.parse(window.localStorage.getItem("user"));
+    // scoreboardEl.textContent = storedUser
+    // scoreboardEl.setAttribute('style', 'display: inline;');
+    // console.log("user " + user);
+    // console.log("stored user " + storedUser);
+    displayHighScore();
+}
+
+function displayHighScore() {
+
+    // Clear todoList element and update todoCountSpan
+    scoreboardEl.innerHTML = "";
+
+    // Render a new li for each todo
+
+    var li = document.createElement("li");
+    for (var i = 0; i < userHighScore.length; i++) {
+        li.textContent = userHighScore[i];
+        li.setAttribute("data-index", i);
+
+        var button = document.createElement("button");
+        button.textContent = "Complete";
+
+        li.appendChild(button);
+        scoreboardEl.appendChild(li);
+        console.log(storedUser)
+    }
 }
 
 //textcontent function
@@ -72,7 +102,7 @@ function changeQuestion(x) {
     if (currentArray === 3) {
         gameOver()
         console.log(x);
-        
+
     }
     else {
         qText.textContent = questionArray[x].questionText;
@@ -100,7 +130,7 @@ function startTimer() {
                 clearInterval(interval);
                 // renderTime();
             }
-        }, 100);
+        }, 1000);
     }
 
 }
@@ -118,6 +148,9 @@ startBtnEl.addEventListener("click", function () {
 });
 
 
+
+
+
 questionsEl.addEventListener("click", function (event) {
     var element = event.target;
     // If that element is a button...
@@ -128,25 +161,51 @@ questionsEl.addEventListener("click", function (event) {
         // changeQuestion(currentArray++)
         //Determining if an answer was correct.
         //Q1
-        if (currentArray === 0 && userPick === '"9"') {
-            currentScore = currentScore + 10;
+        if (currentArray === 0) {
+            if (userPick === '"9"') {
+                currentScore += 10;
+            }
+            else {
+                secondsElapsed += 10
+            }
         }
         //Q2
-        if (currentArray === 1 && userPick === '"Armadillos"') {
-            currentScore = currentScore + 10;
+        if (currentArray === 1) {
+            if (userPick === '"Armadillos"') {
+                currentScore += 10;
+            }
+            else {
+                secondsElapsed += 10
+            }
         }
         //Q3
-        if (currentArray === 2 && userPick === 'Initialize, Evaluate and Increment') {
-            currentScore = currentScore + 10;
+        if (currentArray === 2) {
+            if (userPick === 'Initialize, Evaluate and Increment') {
+                currentScore += 10;
+            }
+            else {
+                secondsElapsed += 10
+            }
         }
-        console.log('crnt arr: ' + currentArray)
-        console.log('user picked: ' + userPick);
-        console.log("score: " + currentScore);
         scoreEl.textContent = "Total Score: " + currentScore;
         currentArray++;
         changeQuestion(currentArray);
+        user.highscore = currentScore;
     }
 });
+
+
+console.log(user);
+
+
+function whenToStop() {
+    if (totalSecondsLeft === 0) {
+        gameOver();
+    }
+    else if (currentArray === 3) {
+        gameOver();
+    }
+}
 
 
 
